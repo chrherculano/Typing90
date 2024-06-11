@@ -1,0 +1,17 @@
+{
+  "name": "typing-game",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "helmet": "^4.6.0",
+    "sqlite3": "^5.0.2"
+  },
+  "author": "",
+  "license": "ISC"
+}

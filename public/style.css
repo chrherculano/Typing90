@@ -1,0 +1,160 @@
+body {
+    background-image: url("./imagens/hardcore.gif");
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+#hardcore {
+    color: white;
+}
+
+header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 10%;
+    background-color: rgba(49, 46, 46, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+h1 {
+    margin-top: 20px;
+    margin-left: 10px;
+    color: white !important;
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+h1 a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+h1 a:hover {
+    color: blue;
+}
+
+h1 a:active {
+    color: blue;
+}
+
+nav {
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 20px;
+}
+
+nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+nav ul li a {
+    display: inline-block;
+    margin-left: 20px;
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: blue;
+}
+
+nav ul li a:active {
+    color: blue;
+}
+
+h2,
+textarea {
+    font-family: monospace;
+    font-size: 24px;
+    color: black;
+    text-align: center;
+}
+
+#container {
+    margin-top: 5%;
+}
+
+#countdownContainer {
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 10px;
+    text-align: center;
+    position: relative;
+    margin-top: 20px;
+}
+
+#pontos,
+#message {
+    font-size: large;
+    color: white;
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 10px;
+    text-align: center;
+    margin-top: 20vh;
+    transform: translateY(-50%);
+}
+
+p {
+    font-family: monospace;
+    margin: 10px 10px;
+    font-size: 35px;
+    color: black;
+}
+
+@media (max-width: 600px) {
+    textarea {
+      width: 100%;
+      /* adjust other styles as needed */
+    }
+}
+
+textarea {
+    margin-top: 20px;
+    width: 400px;
+    height: 100px;
+    resize: none;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    text-align: center;
+    outline: none;
+}
+
+span {
+    font-weight: bold;
+}
+
+html {
+    box-sizing: border-box;
+}
+
+*,
+*:after,
+*:before {
+    box-sizing: inherit;
+}

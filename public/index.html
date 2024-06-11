@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Teste de digitação</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <header>    
+    <h1><a href="../index.html">GoGo Type</a></h1>
+    <nav>
+      <ul>
+        <li><a href="../maisinfo/maisinfo.html">Mais informações</a></li>
+      </ul>
+    </nav>
+  </header>
+  <audio autoplay id="myaudio" loop>
+    <source src="./AUDIO/hardcorebackground.mp3" type="audio/mpeg">
+  </audio>  
+  <div id="container">
+    <button id="start-game">Start Game</button>
+
+    <div id="countdownContainer">
+      <span id="countdown">00:30</span>
+    </div>
+  </div>
+
+  <div class="container">
+    <h2>Vamos ver do que você é capaz</h2>
+    <p id="quote"></p>
+  </div>
+  <p id="message">De o seu melhor</p>
+  <textarea id="answer" rows="4" cols="50" disabled></textarea>
+
+  <p id="pontos">Pontuação: 0</p>
+
+  <script src="script.js"></script>
+</body>
+</html>
