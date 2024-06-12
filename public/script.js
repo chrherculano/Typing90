@@ -1,4 +1,3 @@
-
 let quotes = [];
 fetch('/api/quotes')
   .then(response => response.json())
@@ -6,7 +5,8 @@ fetch('/api/quotes')
     quotes = data.quotes;
   });
 
-let currentQuote = 0;
+let currentQuoteIndex = 0;
+let currentQuote = "";
 const answerInput = document.getElementById("answer");
 const quoteDisplay = document.getElementById("quote");
 const countdownElement = document.getElementById("countdown");
@@ -37,9 +37,12 @@ function startGame() {
     resultMessage.textContent = "";
     score = 0;
     gameStarted = true;
-    displayQuote();
-    startTimer(); // Chama a função startTimer() para iniciar o timer
+    currentQuote = displayQuote(); // Atribui a frase amostrada a currentQuote
+    startTimer(); 
     answerInput.disabled = false; // Enable the text area
+
+    // Exibir o popup para escolher o número de frases novamente
+    showNumberOfQuotesPopup();
   }
 }
 
@@ -70,7 +73,7 @@ function formatTime(timeInSeconds) {
 
 function resetGame() {
   gameStarted = false;
-  startButton.disabled = false;
+  startButton.disabled = false; // Habilitar o botão de iniciar o jogo novamente
   answerInput.disabled = false;
   answerInput.value = "";
   quoteDisplay.innerHTML = "";
@@ -78,15 +81,19 @@ function resetGame() {
   score = 0;
   clearInterval(timerInterval);
   timerInterval = undefined;
-  currentQuote = 0; // Reset the current quote index
+  currentQuoteIndex = 0; // Reset the current quote index
   displayQuote(); // Display the first quote again
   document.getElementById("pontos").textContent = "Pontuação: 0";
   answerInput.disabled = true; // Disable the text area
 }
 
 function displayQuote() {
-  const quote = quotes[currentQuote];
-  const quoteArray = quote.split("");
+  if (quotes.length === 0) return; // Retorna se não houver mais frases disponíveis
+  const randomIndex = Math.floor(Math.random() * quotes.length);
+  currentQuote = quotes[randomIndex];
+  quotes.splice(randomIndex, 1); // Remove a frase atual da lista
+
+  const quoteArray = currentQuote.split("");
 
   quoteDisplay.innerHTML = "";
   quoteArray.forEach((char) => {
@@ -94,6 +101,8 @@ function displayQuote() {
     span.textContent = char;
     quoteDisplay.appendChild(span);
   });
+
+  return currentQuote; // Retorna a frase amostrada
 }
 
 answerInput.addEventListener("input", function () {
@@ -104,9 +113,8 @@ answerInput.addEventListener("input", function () {
 
 function checkAnswer() {
   const answer = answerInput.value.toLowerCase();
-  const quote = quotes[currentQuote];
-  const quoteArray = quote.split("");
-
+  const quoteArray = currentQuote.split(""); // Use currentQuote em vez de quotes[currentQuote]
+  
   quoteDisplay.textContent = "";
   let errorFound = false;
 
@@ -137,7 +145,7 @@ function checkAnswer() {
     quoteDisplay.appendChild(span);
   }
 
-  if (answer === quote.toLowerCase()) {
+  if (answer === currentQuote.toLowerCase()) { // Comparar com currentQuote em vez de quote
     resultMessage.innerHTML = "";
     updateScore(1);
     answerInput.focus();
@@ -146,15 +154,19 @@ function checkAnswer() {
     timeInSeconds = 30;
     startTimer();
 
-    currentQuote++;
-    if (currentQuote >= quotes.length) {
-      alert("Parabéns! Você digitou todas as frases.");
+    // Obter uma nova frase aleatória
+    currentQuote = displayQuote();
+    // Se todas as frases foram concluídas, encerre o jogo
+    if (!currentQuote) {
+      clearInterval(timerInterval);
+      timerInterval = undefined;
+      saveScore(); // Salvar a pontuação no banco de dados
+      alert("Parabéns! Você concluiu todas as frases.");
       resetGame();
-    } else {
-      correctAnswerSound.play();
-      answerInput.value = "";
-      displayQuote();
+      return;
     }
+    correctAnswerSound.play();
+    answerInput.value = "";
   }
 }
 
@@ -166,7 +178,22 @@ function updateScore() {
   document.getElementById("pontos").textContent = `Pontuação: ${score}`;
 }
 
-// Enviar pontuação para o servidor
+// Função para exibir o popup para escolher o número de frases
+function showNumberOfQuotesPopup() {
+  const numberOfQuotes = window.prompt("Quantas frases você quer desafiar? (1 - 50)", "5");
+  let parsedNumberOfQuotes = parseInt(numberOfQuotes);
+
+  if (!isNaN(parsedNumberOfQuotes) && parsedNumberOfQuotes > 0 && parsedNumberOfQuotes <= 50) {
+    // Mantenha apenas o número solicitado de frases
+    quotes = quotes.slice(0, parsedNumberOfQuotes);
+  } else {
+    alert("Número de frases definido para padrão de 20");
+    parsedNumberOfQuotes = 20;
+    quotes = quotes.slice(0, parsedNumberOfQuotes);
+  }
+}
+
+// Função para enviar pontuação para o servidor
 function saveScore() {
   const playerName = prompt("Digite seu nome:");
   if (playerName) {
@@ -176,41 +203,13 @@ function saveScore() {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ player_name: playerName, score: score })
-    }).then(response => response.json())
-      .then(data => {
-        console.log('Score saved:', data);
-      });
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Score saved:', data);
+    })
+    .catch(error => {
+      console.error('Error saving score:', error);
+    });
   }
 }
-
-answerInput.addEventListener("keydown", (e) => {
-  if (e.keyCode === 13) {
-    if (gameStarted) {
-      e.preventDefault();
-    }
-  }
-});
-
-answerInput.addEventListener("input", (e) => {
-  const answer = e.target.value;
-  const quote = quotes[currentQuote];
-  const maxChars = quote.length;
-
-  if (answer.length > maxChars) {
-    e.target.value = answer.slice(0, maxChars);
-  }
-});
-
-// Pop-up for the user to choose the number of quotes
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    const numberOfQuotes = window.prompt("Quantas frases você quer desafiar?  1 - 20", "5");
-    const parsedNumberOfQuotes = parseInt(numberOfQuotes, 10);
-
-    if (!isNaN(parsedNumberOfQuotes) && parsedNumberOfQuotes > 0 && parsedNumberOfQuotes <= quotes.length) {
-      quotes = quotes.slice(0, parsedNumberOfQuotes);
-    } else {
-      alert("Numero de frases definido para padrão de 20");
-    }
-  }, 1000); // Adjust the delay time (in milliseconds) as needed
-});
