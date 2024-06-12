@@ -123,8 +123,8 @@ p {
 
 @media (max-width: 600px) {
     textarea {
-      width: 100%;
-      /* adjust other styles as needed */
+        width: 100%;
+        /* adjust other styles as needed */
     }
 }
 
@@ -158,3 +158,44 @@ html {
 *:before {
     box-sizing: inherit;
 }
+
+.dropdown {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+}
+
+#dropdown-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+#dropdown-menu option {
+    padding: 12px 16px;
+    display: block;
+    width: 100%;
+    text-align: left;
+    border: none;
+    background-color: inherit;
+    color: black;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#dropdown-menu option:hover {
+    background-color: #ddd;
+}
+

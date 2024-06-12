@@ -16,6 +16,7 @@ app.use(
       connectSrc: ["'self'"],
       fontSrc: ["'self'"],
       objectSrc: ["'none'"],
+      scriptSrcAttr: ["'self'", "'unsafe-inline'"], // Permitir atributos de script
       upgradeInsecureRequests: [],
     },
   })
@@ -24,15 +25,40 @@ app.use(
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
+// Defina seus endpoints aqui
+// Exemplo:
 app.get('/api/quotes', (req, res) => {
-  db.all('SELECT text FROM quotes', [], (err, rows) => {
+  const query = `
+    SELECT quotes.text, authors.name AS author 
+    FROM quotes 
+    JOIN authors 
+    ON quotes.author_id = authors.id
+  `;
+  db.all(query, [], (err, rows) => {
     if (err) {
       res.status(500).json({ error: err.message });
       return;
     }
     res.json({
-      quotes: rows.map(row => row.text)
+      quotes: rows
     });
+  });
+});
+
+// Endpoint para buscar os top scores
+app.get('/api/topscores', (req, res) => {
+  const query = `
+    SELECT player_name, score 
+    FROM scores 
+    ORDER BY score DESC 
+    LIMIT 10
+  `;
+  db.all(query, [], (err, rows) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    res.json({ topscores: rows });
   });
 });
 

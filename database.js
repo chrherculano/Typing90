@@ -16,71 +16,71 @@ const db = new sqlite3.Database(dbPath);
 
 // Criar tabelas e inserir dados de exemplo
 db.serialize(() => {
-  db.run("CREATE TABLE IF NOT EXISTS quotes (id INTEGER PRIMARY KEY, text TEXT)");
+  db.run("CREATE TABLE IF NOT EXISTS authors (id INTEGER PRIMARY KEY, name TEXT)");
+  db.run("CREATE TABLE IF NOT EXISTS quotes (id INTEGER PRIMARY KEY, text TEXT, author_id INTEGER, FOREIGN KEY(author_id) REFERENCES authors(id))");
   db.run("CREATE TABLE IF NOT EXISTS scores (id INTEGER PRIMARY KEY, player_name TEXT, score INTEGER)");
 
-  const stmt = db.prepare("INSERT INTO quotes (text) VALUES (?)");
-  const quotes = [
-      "A persistência é o caminho do êxito",
-    "O sucesso é a soma de pequenos esforços repetidos dia após dia",
-    "Se você quer algo que nunca teve, você precisa fazer algo que nunca fez",
-    "O que você faz hoje pode melhorar todos os amanhãs",
-    "A vida é uma jornada, não um destino",
-    "Faça o que você pode, com o que você tem, onde você está",
-    "Acredite em si mesmo e tudo será possível",
-    "Grandes mentes discutem ideias; mentes medianas discutem eventos; mentes pequenas discutem pessoas",
-    "A melhor maneira de prever o futuro é criá-lo",
-    "Seja a mudança que você deseja ver no mundo",
-    "Quanto mais você se esforça, mais sorte você tem",
-    "A educação é a arma mais poderosa que você pode usar para mudar o mundo",
-    "A única maneira de fazer um excelente trabalho é amar o que você faz",
-    "Nada é impossível, a palavra em si diz 'eu sou possível'",
-    "Nossas vidas começam a terminar no dia em que permanecemos em silêncio sobre as coisas que importam",
-    "Não espere por uma crise para descobrir o que é importante em sua vida",
-    "A vida é uma viagem, não um destino",
-    "A única maneira de alcançar o impossível é acreditar que é possível",
-    "O segredo para começar é dividir as tarefas árduas e complexas em pequenas tarefas gerenciáveis e, em seguida, começar na primeira",
-    "Se você está atravessando o inferno, continue",
-    "Se você quer ir rápido, vá sozinho. Se você quer ir longe, vá junto",
-    "A vida é 10% do que acontece com você e 90% como você reage a isso",
-    "O sucesso não é definitivo, o fracasso não é fatal: é a coragem de continuar que conta",
-    "Nunca desista de um sonho apenas por causa do tempo que levará para realizá-lo. O tempo passará de qualquer maneira",
-    "Quando tudo parecer estar indo contra você, lembre-se que o avião decola contra o vento, não com ele",
-    "A verdadeira medida de um homem não é como ele se comporta em momentos de conforto e conveniência, mas em como ele se mantém em tempos de controvérsia e desafio",
-    "Aquele que não tem confiança nos outros não lhes pode ganhar a confiança",
-    "Nada é particularmente difícil se você dividi-lo em pequenas partes",
-    "Você não é derrotado quando perde. Você é derrotado quando desiste",
-    "Aquele que olha para fora sonha; quem olha para dentro, acorda",
-    "A mente é tudo. Você se torna o que você pensa",
-    "Quanto maior o obstáculo, mais glória em superá-lo",
-    "Nós somos o que fazemos repetidamente. A excelência, portanto, não é um ato, mas um hábito",
-    "Você não pode atravessar o mar simplesmente parando e olhando para a água",
-    "As pessoas geralmente consideram impossível até que alguém faça",
-    "A maior glória em viver está em levantar-se a cada vez que caímos",
-    "A força não vem da capacidade física. Ela vem de uma vontade indomável",
-    "Não é o que acontece com você, mas como você reage ao que acontece que importa",
-    "O que você obtém ao alcançar seus objetivos não é tão importante quanto o que você se torna ao alcançá-los",
-    "Pode ser que você esteja com medo de falhar, mas nunca saberá o quão grande você pode ser até que se desafie",
-    "Você é o único obstáculo para seu próprio sucesso",
-    "A verdadeira liberdade é viver como se você estivesse constantemente sendo observado por alguém que você respeita",
-    "Não é sobre quanto tempo você dedica, mas quanto você dedica durante o tempo que você tem",
-    "Quando você sente que quer desistir, lembre-se por que você começou",
-    "Não deixe que o que você não pode fazer interfira no que você pode fazer",
-    "A vida é um desafio, aceite-o",
-    "dança gatinho dança",
-    "Se você acredita, pode realizar",
-    "Cada dia é uma oportunidade de ser melhor do que era ontem",
-    "O que quer que a mente do homem possa conceber e acreditar, ela pode alcançar",
-    "Quando você pensa que pode, você está meio lá",
-    "Grandes coisas nunca vêm de zonas de conforto",
-    "Você nunca é velho demais para definir outra meta ou sonhar um novo sonho"
+  const authors = [
+    "William Shakespeare",
+    "Albert Einstein",
+    "Mark Twain",
+    "Oscar Wilde",
+    "Friedrich Nietzsche",
+    "Platão",
+    "Aristóteles",
+    "Sócrates",
+    "Leonardo da Vinci",
+    "Confúcio",
+    "Sun Tzu",
+    "Napoleão Bonaparte",
+    "Mahatma Gandhi",
+    "Winston Churchill",
+    "Martin Luther King Jr.",
+    "Nelson Mandela",
+    "Madre Teresa",
+    "Benjamin Franklin",
+    "Thomas Edison",
+    "Alexandre, o Grande"
   ];
-  
-  quotes.forEach(quote => {
-    stmt.run(quote);
-  });
 
-  stmt.finalize();
+  const quotes = [
+    "Ser ou não ser, eis a questão",
+    "A vida é como andar de bicicleta. Para manter o equilíbrio, você deve continuar se movendo",
+    "O segredo para avançar é começar",
+    "Seja você mesmo; todos os outros já existem",
+    "O que não nos mata nos torna mais fortes",
+    "O começo é a parte mais importante do trabalho",
+    "Nós somos o que repetidamente fazemos. A excelência, então, não é um ato, mas um hábito",
+    "A única verdadeira sabedoria está em saber que você nada sabe",
+    "Aprender nunca cansa a mente",
+    "Não importa o quão devagar você vá, desde que você não pare",
+    "A suprema arte da guerra é derrotar o inimigo sem lutar",
+    "A vitória pertence aos mais perseverantes",
+    "A melhor maneira de encontrar a si mesmo é se perder no serviço dos outros",
+    "O sucesso não é definitivo, o fracasso não é fatal: é a coragem de continuar que conta",
+    "A injustiça em qualquer lugar é uma ameaça à justiça em todo lugar",
+    "Parece sempre impossível até que seja feito",
+    "Espalhe amor por onde você for. Que ninguém venha a você sem sair mais feliz",
+    "Diga-me e eu esqueço. Ensine-me e eu lembro. Envolva-me e eu aprendo",
+    "O gênio é 1% de inspiração e 99% de transpiração",
+    "Não tenho medo de um exército de leões liderados por uma ovelha; tenho medo de um exército de ovelhas lideradas por um leão"
+  ];
+
+  const authorStmt = db.prepare("INSERT INTO authors (name) VALUES (?)");
+  const quoteStmt = db.prepare("INSERT INTO quotes (text, author_id) VALUES (?, ?)");
+
+  authors.forEach((author, index) => {
+    authorStmt.run(author, function () {
+      const authorId = this.lastID;
+      quoteStmt.run(quotes[index], authorId, function() {
+        if (index === authors.length - 1) {
+          quoteStmt.finalize();
+        }
+      });
+    });
+  });
+  
+  authorStmt.finalize();
 });
 
 module.exports = db;
